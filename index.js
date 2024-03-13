@@ -47,7 +47,7 @@ app.get("/student/list", async(req, res)=> {
         const allStudents = await StudentModel.find();
         res.status(200).json({ 
             message: "All students retrieved!", 
-            students: allStudents 
+            student: allStudents 
         });   
     } catch (error) {
         console.log(err.message);
@@ -56,6 +56,88 @@ app.get("/student/list", async(req, res)=> {
         });
     }
 });
+
+
+app.get("/student/id", async (req, res) => {
+    try {
+        const studentId = req.params._id;
+        const student = await StudentModel.findById(studentId);
+
+        if (!student) {
+            return res.status(404).json({
+                message: "Student not found"
+            });
+        }
+
+        res.status(200).json({
+            message: "Student successfully identified",
+            student: student
+        });
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).json({
+            message: "Error retrieving the student"
+        });
+    }
+});
+
+
+app.get ("/student/email", async(req,res) => {
+    try{
+        const newEmail = await StudentModel.find(
+            {email: "beylar@gmail.com"}
+        );
+        res.status(200).json({
+            message: "Student successfully identified",
+            student: newEmail
+        });
+    }
+    catch (err){
+        console.log(err.message);
+        res.status(500).json({
+            message: "Error retrieving the student"
+        })
+    }
+});
+
+
+app.put ("/student/update", async(req,res) => {
+    try{
+        const updates = await StudentModel.updateOne(
+            { fullName: "Chartine Noella"},
+            { $set : { gender: "Female"}}
+        );
+        res.status(200).json({
+            message:"Student info successfully updated",
+            student: updates
+        })
+    }
+    catch (err){
+        console.log(err.message);
+        res.status(500).json({
+            message: "Error updating the student info"
+        })
+    }
+});
+
+
+app.delete("/student/delete", async(req,res) => {
+    try{
+        const deletion = await StudentModel.deleteOne(
+            {fullName: "Delphine Ingabire"}
+        )
+        res.status(200).json({
+            message: "Student info successfully deleted",
+            student : deletion
+        })
+    }
+    catch (error){
+        console.log(err.message);
+        res.status(500).json({
+            message:"Error deleting the student info"
+        })
+    }
+})
 
 mongoose.connect(db_connection_string)
 .then(() => {
