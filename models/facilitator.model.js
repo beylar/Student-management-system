@@ -24,7 +24,7 @@ const FacilitatorSchema = new mongoose.Schema({
         type: [],
         required: true
     },
-    gender: {
+    role: {
         type: String,
         required: true,
         enum: {
@@ -34,3 +34,7 @@ const FacilitatorSchema = new mongoose.Schema({
     }
 
 },{ timestamps: true });
+
+const FacilitatorModel = mongoose.model('Facilitator', FacilitatorSchema);
+
+export default FacilitatorModel;
