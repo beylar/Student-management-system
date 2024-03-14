@@ -121,23 +121,32 @@ app.put ("/student/update", async(req,res) => {
 });
 
 
-app.delete("/student/delete", async(req,res) => {
-    try{
+app.delete("/student/delete", async (req, res) => {
+    try {
         const deletion = await StudentModel.deleteOne(
-            {fullName: "Delphine Ingabire"}
-        )
+            { fullName: "Charite Uwineza" }
+        );
+
+        // Check if any document was deleted
+        if (deletion.deletedCount === 0) {
+            return res.status(404).json({
+                message: "Student not found"
+            });
+        }
+
         res.status(200).json({
-            message: "Student info successfully deleted",
-            student : deletion
-        })
-    }
-    catch (error){
-        console.log(err.message);
+            message: "Student deleted successfully",
+            deletion: deletion
+        });
+
+    } catch (error) {
+        console.log(error.message);
         res.status(500).json({
-            message:"Error deleting the student info"
-        })
+            message: "Error deleting the student info"
+        });
     }
-})
+});
+
 
 mongoose.connect(db_connection_string)
 .then(() => {
